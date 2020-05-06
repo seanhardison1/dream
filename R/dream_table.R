@@ -3,6 +3,7 @@
 #' @param model A glmmTMB model object.
 #' @param caption A caption to include with the table.
 #'
+#' @export
 #'
 #' @examples
 #' \dontrun{
