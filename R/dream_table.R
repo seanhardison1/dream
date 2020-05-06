@@ -5,10 +5,12 @@
 #'
 #'
 #' @examples
+#' \dontrun{
 #' data(cbpp, package="lme4")
 #' bovine <- glmmTMB(cbind(incidence, size-incidence) ~ period + (1|herd),
 #'                  family=binomial, data=cbpp)
 #' dream_table(model = bovine, caption = "Dream table for Binomial GLMM")
+#' }
 
 dream_table <- function(model, caption){
   ### Model summaries
