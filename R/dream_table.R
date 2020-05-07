@@ -29,8 +29,7 @@ dream_table <- function(model, caption = NULL){
                                `Std. error` = std.error,
                                `$z$ value` = statistic,
                                `P-value` = p.value) %>%
-      dplyr::mutate_at(dplyr::vars(Estimate:`P-value`), round, 3) %>%
-      dplyr::mutate_all(tidyr::replace_na, "")
+      dplyr::mutate_at(dplyr::vars(Estimate:`P-value`), round, 3)
 
   } else if (class(model) == "glmerMod" | class(model) == "lmerMod") {
     sp <- fp %>% dplyr::select(Effect = effect,
@@ -38,11 +37,12 @@ dream_table <- function(model, caption = NULL){
                                Estimate = estimate,
                                `Std. error` = std.error,
                                `$z$ value` = statistic) %>%
-      dplyr::mutate_at(dplyr::vars(Estimate:`$z$ value`), round, 3) %>%
-      dplyr::mutate_all(tidyr::replace_na, "")
+      dplyr::mutate_at(dplyr::vars(Estimate:`$z$ value`), round, 3)
   }
 
-  tble <- sp %>% knitr::kable(., "latex",
+  tble <- sp %>%
+    dplyr::mutate_all(tidyr::replace_na, "") %>%
+    knitr::kable(., "latex",
                               booktabs = T,
                               escape = F,
                               caption = caption,

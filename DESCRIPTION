@@ -20,4 +20,6 @@ Imports:
     ggplot2,
     lubridate,
     broom,
-    broom.mixed
+    broom.mixed,
+    kableExtra,
+    knitr
