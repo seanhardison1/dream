@@ -4,7 +4,7 @@
 \alias{dream_table}
 \title{Generate pretty LaTeX tables from glmmTMB summaries}
 \usage{
-dream_table(model, caption)
+dream_table(model, caption = NULL)
 }
 \arguments{
 \item{model}{A glmmTMB model object.}
