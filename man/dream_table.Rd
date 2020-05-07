@@ -2,17 +2,17 @@
 % Please edit documentation in R/dream_table.R
 \name{dream_table}
 \alias{dream_table}
-\title{Generate pretty LaTeX tables from glmmTMB summaries}
+\title{Generate pretty LaTeX tables from glmmTMB and lme4 model summaries.}
 \usage{
 dream_table(model, caption = NULL)
 }
 \arguments{
-\item{model}{A glmmTMB model object.}
+\item{model}{A mixed model fit with glmmTMB or lme4.}
 
 \item{caption}{A caption to include with the table.}
 }
 \description{
-Generate pretty LaTeX tables from glmmTMB summaries
+Currently only works with crossed random-intercept models.
 }
 \examples{
 \dontrun{

@@ -1,6 +1,8 @@
-#' Generate pretty LaTeX tables from glmmTMB summaries
+#' Generate pretty LaTeX tables from glmmTMB and lme4 model summaries.
 #'
-#' @param model A glmmTMB model object.
+#' Currently only works with crossed random-intercept models.
+#'
+#' @param model A mixed model fit with glmmTMB or lme4.
 #' @param caption A caption to include with the table.
 #'
 #' @export
