@@ -2,5 +2,6 @@
 
 export("%>%")
 export(dream_table)
+export(query_tac)
 export(theme_fade)
 importFrom(magrittr,"%>%")

@@ -22,4 +22,6 @@ Imports:
     broom,
     broom.mixed,
     kableExtra,
-    knitr
+    knitr,
+    tsibble,
+    stringr
