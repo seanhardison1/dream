@@ -3,5 +3,7 @@
 export("%>%")
 export(dream_table)
 export(query_tac)
+export(read_kml)
 export(theme_fade)
+import(sf)
 importFrom(magrittr,"%>%")

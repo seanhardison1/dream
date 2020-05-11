@@ -24,4 +24,7 @@ Imports:
     kableExtra,
     knitr,
     tsibble,
-    stringr
+    stringr,
+    maptools,
+    raster,
+    sf
