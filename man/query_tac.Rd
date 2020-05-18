@@ -4,7 +4,7 @@
 \alias{query_tac}
 \title{Query NOAA Tides and Currents stations}
 \usage{
-query_tac(start, end, product, station, step = "3 days")
+query_tac(start, end, product, station, step = "3 days", datum = "MLLW")
 }
 \arguments{
 \item{start}{Character vector start date for query ("YYYY-MM-DD").}
@@ -19,6 +19,8 @@ not available at all stations.}
 
 \item{step}{Time step for data query. Default time step is 3 days ("3 days"), with a maximum time step of 30 days.
 Larger time steps will result in faster downloads for longer time periods.}
+
+\item{datum}{Queries regarding water level require a datum. If none is selected, then datum defaults to "MLLW," or Mean-Lower Low Water. Example datum selections are available to view at \url{https://tidesandcurrents.noaa.gov/datums.html?id=8722607}.}
 }
 \description{
 Query NOAA Tides and Currents stations

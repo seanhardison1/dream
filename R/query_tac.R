@@ -8,7 +8,7 @@
 #' See a complete listing of available products at \url{https://tidesandcurrents.noaa.gov/api/#products}. Note that all products are
 #' not available at all stations.
 #' @param station Station ID number. A complete listing of stations is available at \url{https://tidesandcurrents.noaa.gov/stations.html}.
-#'
+#' @param datum Queries regarding water level require a datum. If none is selected, then datum defaults to "MLLW," or Mean-Lower Low Water. Example datum selections are available to view at \url{https://tidesandcurrents.noaa.gov/datums.html?id=8722607}.
 #' @note All times are GMT.
 #'
 #' @export
@@ -20,7 +20,7 @@
 #'           product = "water_temperature",
 #'           station = 8631044)
 
-query_tac <- function(start, end, product, station, step = "3 days"){
+query_tac <- function(start, end, product, station, step = "3 days", datum = "MLLW"){
 
   if (step == "1 day") step <- "1 days"
   step_num <- as.numeric(stringr::str_extract_all(step, "\\d+"))
@@ -42,11 +42,28 @@ query_tac <- function(start, end, product, station, step = "3 days"){
     start <- stringr::str_remove_all(as.character(query_dates[i]), "-")
     end <- stringr::str_remove_all(as.character(query_dates[i + 1]), "-")
 
+    if (product %in% c("water_temperature", "conductivity", "salinity",
+                       "currents", "currents_predictions")){
+      server <- "NOS.COOPS.TAC.PHYSOCEAN"
+    } else if (product %in% c("water_level", "one_minute_water_level",
+                              "predictions", "datums",
+                              "monthly_mean", "daily_mean",
+                              "high_low", "hourly_height")){
+      server <- "NOS.COOPS.TAC.WL"
+    } else if (product %in% c("air_temperature", "wind", "air_pressure", "air_gap",
+                              "visibility", "humidity")){
+      server <- "NOS.COOPS.TAC.MET"
+    } else {
+      stop("Product name misspelled or not available.")
+    }
+
     fname <- paste0("https://tidesandcurrents.noaa.gov/api/datagetter?product=",product,
-                    "&application=NOS.COOPS.TAC.PHYSOCEAN&begin_date=", start,
+                    "&application=",server,"&begin_date=", start,
                     "&end_date=",end,
                     "&station=",station,
                     "&time_zone=GMT&units=english&format=csv&application=UVA")
+
+    fname <- ifelse(server == "NOS.COOPS.TAC.WL", stringr::str_glue(fname, paste0("&datum=",datum)), fname)
 
     int_dat <- suppressMessages(readr::read_csv(fname)) %>%
       dplyr::filter(complete.cases(.))
