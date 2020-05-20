@@ -4,18 +4,21 @@
 \alias{dream_table}
 \title{Generate pretty LaTeX tables from glmmTMB and lme4 model summaries.}
 \usage{
-dream_table(model, caption = NULL)
+dream_table(model, caption = NULL, type = "latex")
 }
 \arguments{
 \item{model}{A mixed model fit with glmmTMB or lme4.}
 
 \item{caption}{A caption to include with the table.}
+
+\item{type}{Output type, defaulting to "latex". Also accepts "html".}
 }
 \description{
 Currently only works with crossed random-intercept models.
 }
 \examples{
 \dontrun{
+library(glmmTMB)
 data(cbpp, package="lme4")
 bovine <- glmmTMB(cbind(incidence, size-incidence) ~ period + (1|herd),
                  family=binomial, data=cbpp)

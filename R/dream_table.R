@@ -4,18 +4,20 @@
 #'
 #' @param model A mixed model fit with glmmTMB or lme4.
 #' @param caption A caption to include with the table.
-#'
+#' @param type Output type, defaulting to "latex". Also accepts "html".
 #' @export
 #'
 #' @examples
 #' \dontrun{
+#' library(glmmTMB)
 #' data(cbpp, package="lme4")
 #' bovine <- glmmTMB(cbind(incidence, size-incidence) ~ period + (1|herd),
 #'                  family=binomial, data=cbpp)
 #' dream_table(model = bovine, caption = "Dream table for Binomial GLMM")
 #' }
 
-dream_table <- function(model, caption = NULL){
+dream_table <- function(model, caption = NULL, type = "latex"){
+
   ### Model summaries
   fp <- broom.mixed::tidy(model) %>%
     dplyr::mutate(term = ifelse(is.na(std.error),
@@ -42,7 +44,7 @@ dream_table <- function(model, caption = NULL){
 
   tble <- sp %>%
     dplyr::mutate_all(tidyr::replace_na, "") %>%
-    knitr::kable(., "latex",
+    knitr::kable(., type,
                               booktabs = T,
                               escape = F,
                               caption = caption,
@@ -53,5 +55,4 @@ dream_table <- function(model, caption = NULL){
 
   return(tble)
 }
-
 
