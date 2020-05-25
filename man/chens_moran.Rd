@@ -28,6 +28,8 @@ Represents the autocorrelation pattern of observations.}
 \item{\code{f_star}}{The matrix-vector product of the Ideal Spatial Weights Matrix and the
 standardized vector \code{z}. Represents the global autocorrelation estimate (i.e., the regression line
 of f ~ z).}
+\item{\code{f_residuals}}{The residuals of spatial autocorrelation (\code{f} - \code{f_star}). Useful for diagnosing
+fit of spatial weights function.}
 \item{\code{z}}{The standardized vector of observations.}
 \item{\code{lisa}}{The Local Indicators of Spatial Association (LISA), or local Moran's I. Equivalent
 to the diagonal of the Ideal Spatial Weights Matrix.}
@@ -35,6 +37,11 @@ to the diagonal of the Ideal Spatial Weights Matrix.}
 \description{
 Estimate global and local Moran's I (also known as LISA) using the methods proposed
 in Chen 2013.
+}
+\details{
+\code{chens_moran} estimates global and local Moran's I using the methods proposed in
+Chen 2013. Takes inspiration from the much more complete \code{Irescale} package
+(Fuentes et al. 2019).
 }
 \examples{
 
@@ -66,4 +73,8 @@ Spatial Analytical 4 (1996): 111.
 
 Chen, Yanguang. "New approaches for calculating Moran’s index of spatial autocorrelation."
 PloS one 8.7 (2013).
+
+Ivan Fuentes, Thomas DeWitt, Thomas Ioerger and Michael Bishop (2019). Irescale:
+Calculate and Rectify Moran's I. R package version 2.3.0.
+https://CRAN.R-project.org/package=Irescale
 }

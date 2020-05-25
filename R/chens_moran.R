@@ -12,6 +12,10 @@
 #' are calculated for the spatial population. The choice of Moran's I for the spatial sample or
 #' population depends on the scope of the study.
 #'
+#' @details `chens_moran` estimates global and local Moran's I using the methods proposed in
+#' Chen 2013. Takes inspiration from the much more complete `Irescale` package
+#' (Fuentes et al. 2019).
+#'
 #' @return A list object containing the global estimate for Moran's I (`global_estimate`) and
 #' the input `data.frame` with new columns for the following:
 #'
@@ -20,6 +24,8 @@
 #' \item{`f_star`}{The matrix-vector product of the Ideal Spatial Weights Matrix and the
 #' standardized vector `z`. Represents the global autocorrelation estimate (i.e., the regression line
 #' of f ~ z).}
+#' \item{`f_residuals`}{The residuals of spatial autocorrelation (`f` - `f_star`). Useful for diagnosing
+#' fit of spatial weights function.}
 #' \item{`z`}{The standardized vector of observations.}
 #' \item{`lisa`}{The Local Indicators of Spatial Association (LISA), or local Moran's I. Equivalent
 #' to the diagonal of the Ideal Spatial Weights Matrix.}
@@ -34,6 +40,10 @@
 #'
 #' Chen, Yanguang. "New approaches for calculating Moran’s index of spatial autocorrelation."
 #' PloS one 8.7 (2013).
+#'
+#' Ivan Fuentes, Thomas DeWitt, Thomas Ioerger and Michael Bishop (2019). Irescale:
+#' Calculate and Rectify Moran's I. R package version 2.3.0.
+#' https://CRAN.R-project.org/package=Irescale
 #'
 #' @examples
 #'
@@ -67,7 +77,7 @@ chens_moran <- function(df, z, dist, weight_func = "nexp",
   n <- length(df[[z]])
 
   if (!sample){
-    # standard deviation for the population rather
+    # standard deviation for the population
     sd_pop <- sqrt( sum( (df[[z]] - mean(df[[z]])) ^ 2 ) / n )
 
     # standardize the vector
@@ -96,11 +106,12 @@ chens_moran <- function(df, z, dist, weight_func = "nexp",
   lisa <- diag(as.matrix(z) %*% as.matrix(t(z)) %*% as.matrix(W))
   f <- n * as.matrix(W) %*% as.matrix(z)
 
-  ac_scatter <- tibble(f_star = as.numeric(f_star),
+  ac_scatter <- tibble::tibble(f_star = as.numeric(f_star),
                        f = as.numeric(f),
+                       f_residuals = f - f_star,
                        z = as.numeric(z),
                        lisa = as.numeric(lisa)) %>%
-    bind_cols(.,df)
+    dplyr::bind_cols(.,df)
 
   mod <- lm(f ~ z, ac_scatter)
 
