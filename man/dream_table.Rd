@@ -4,7 +4,7 @@
 \alias{dream_table}
 \title{Generate pretty LaTeX tables from glmmTMB and lme4 model summaries.}
 \usage{
-dream_table(model, caption = NULL, type = "latex")
+dream_table(model, caption = NULL, type = "latex", alpha = 0.05, abbrev = TRUE)
 }
 \arguments{
 \item{model}{A mixed model fit with glmmTMB or lme4.}
@@ -12,6 +12,10 @@ dream_table(model, caption = NULL, type = "latex")
 \item{caption}{A caption to include with the table.}
 
 \item{type}{Output type, defaulting to "latex". Also accepts "html".}
+
+\item{alpha}{Numeric giving the alpha level for bolding p-values in table.}
+
+\item{abbrev}{Logical. If P < 0.001, then abbreviate P value output to "P < 0.001".}
 }
 \description{
 Currently only works with crossed random-intercept models.
