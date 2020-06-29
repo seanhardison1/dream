@@ -4,7 +4,14 @@
 \alias{dream_table}
 \title{Generate pretty LaTeX tables from glmmTMB and lme4 model summaries.}
 \usage{
-dream_table(model, caption = NULL, type = "latex", alpha = 0.05, abbrev = TRUE)
+dream_table(
+  model,
+  caption = NULL,
+  type = "latex",
+  alpha = 0.05,
+  abbrev = TRUE,
+  correction = F
+)
 }
 \arguments{
 \item{model}{A mixed model fit with glmmTMB or lme4.}
@@ -13,9 +20,11 @@ dream_table(model, caption = NULL, type = "latex", alpha = 0.05, abbrev = TRUE)
 
 \item{type}{Output type, defaulting to "latex". Also accepts "html".}
 
-\item{alpha}{Numeric giving the alpha level for bolding p-values in table.}
+\item{alpha}{Numeric giving the alpha level for bolding P values in table.}
 
-\item{abbrev}{Logical. If P < 0.001, then abbreviate P value output to "P < 0.001".}
+\item{abbrev}{Logical. If P < 0.001, then abbreviate P value output to "< 0.001".}
+
+\item{correction}{Logical. If TRUE, P values are adjusted for multiple comparisons.}
 }
 \description{
 Currently only works with crossed random-intercept models.
@@ -26,6 +35,6 @@ library(glmmTMB)
 data(cbpp, package="lme4")
 bovine <- glmmTMB(cbind(incidence, size-incidence) ~ period + (1|herd),
                  family=binomial, data=cbpp)
-dream_table(model = bovine, caption = "Dream table for Binomial GLMM")
+dream_table(model = bovine, caption = "Dream table for Binomial GLMM", correction = F)
 }
 }

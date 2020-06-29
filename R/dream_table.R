@@ -7,6 +7,7 @@
 #' @param type Output type, defaulting to "latex". Also accepts "html".
 #' @param alpha Numeric giving the alpha level for bolding P values in table.
 #' @param abbrev Logical. If P < 0.001, then abbreviate P value output to "< 0.001".
+#' @param correction Logical. If TRUE, P values are adjusted for multiple comparisons.
 #' @export
 #'
 #' @examples
@@ -15,10 +16,10 @@
 #' data(cbpp, package="lme4")
 #' bovine <- glmmTMB(cbind(incidence, size-incidence) ~ period + (1|herd),
 #'                  family=binomial, data=cbpp)
-#' dream_table(model = bovine, caption = "Dream table for Binomial GLMM")
+#' dream_table(model = bovine, caption = "Dream table for Binomial GLMM", correction = F)
 #' }
 
-dream_table <- function(model, caption = NULL, type = "latex", alpha = 0.05, abbrev = TRUE) {
+dream_table <- function(model, caption = NULL, type = "latex", alpha = 0.05, abbrev = TRUE, correction = F) {
 
   ### Model summaries
   fp <- broom.mixed::tidy(model) %>%
@@ -44,18 +45,23 @@ dream_table <- function(model, caption = NULL, type = "latex", alpha = 0.05, abb
       dplyr::mutate_at(dplyr::vars(Estimate:`$z$ value`), round,4)
   }
 
+  if (correction) sp$`P-value` <- round(c(p.adjust(sp$`P-value`[!is.na(sp$`P-value`)], method = "BH"),
+                                          sp$`P-value`[is.na(sp$`P-value`)]), 4)
+
   tble <- sp %>%
-    dplyr::mutate(`P-value` = ifelse(`P-value` < 0.001,
-                                     "< 0.001",
-                                     `P-value`))
+    dplyr::mutate(
+      `P-value` = ifelse(`P-value` < 0.001,
+                         "< 0.001",
+                         `P-value`),
+      `P-value` = as.character(`P-value`))
 
   if (abbrev){
     tble <- tble %>%
-      dplyr::mutate(`P-value` = ifelse(as.numeric(stringr::str_extract(`P-value`, "\\d.*")) < alpha,
-                                       ifelse(type == "html",
-                                              paste0("**",`P-value`, "**"),
-                                              paste0("\\textbf{",`P-value`,"}")),
-                                       `P-value`))
+      dplyr::mutate(`P-value` = ifelse(as.numeric(stringr::str_extract(`P-value`, "\\d.*")) < alpha & type == "html",
+                                       paste0("**",`P-value`, "**"),
+                                       ifelse(as.numeric(stringr::str_extract(`P-value`, "\\d.*")) < alpha & type == "latex",
+                                              paste0("\\textbf{",`P-value`,"}"),
+                                              `P-value`)))
   }
 
   tble <- tble %>%

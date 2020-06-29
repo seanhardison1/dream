@@ -27,4 +27,5 @@ Imports:
     stringr,
     maptools,
     raster,
-    sf
+    sf,
+    DHARMa
