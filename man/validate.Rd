@@ -4,24 +4,42 @@
 \alias{validate}
 \title{Assess model fit for multiple models through DHARMa residual simulation}
 \usage{
-validate(mod_set, n = 1000)
+validate(mod_set, n = 1000, p.adjust.method = "none")
 }
 \arguments{
-\item{mod_set}{A list of model objects}
+\item{mod_set}{A list of model objects.}
 
-\item{n}{Number of DHARMa simulations to generate}
+\item{n}{Number of DHARMa simulations to generate from each model.}
+
+\item{p.adjust.method}{Defaults to \code{none}, but takes any correction method specified with \code{\link{p.adjust}}.}
 }
 \value{
 Returns a data.frame containing model formulas for each model and P values for
-each test applied. Resultant P values are adjusted following the Benjamini and Hochberg method.
+each test applied.
 }
 \description{
 This function applies DHARMa validation tests to a user-specified list of models. Tests
 look for agreement between simulated and empirical residuals; assessing models for dispersion,
 zero-inflation, anomalous prevalence of outliers, and deviations from expected distributions.
+}
+\details{
 The philosophy behind this approach is that models being compared using information criteria
 should meet modeling assumptions regardless of complexity, otherwise model selection
-may provide a parsimonious, poorly fitting model (Mazerolle 2019).
+may provide a parsimonious, poorly fitting model (Mazerolle 2019). This method should not
+be a replacement for visual inspection of model fit, but may be useful in an
+exploratory context, especially with more complicated hierarchical models. To remain conservative,
+resultant P values from DHARMa tests are not adjusted for multiple comparison by default, although
+P adjustment methods may be specified using \code{p.adjust.method}.
+}
+\examples{
+
+library(glmmTMB)
+mod_list <- list()
+mod_list[[1]] <- glmmTMB(count ~ mined + (1|site), zi=~mined, family=poisson, data=Salamanders)
+mod_list[[2]] <- glmmTMB(count ~ mined + cover + (1|site), zi=~mined, family=poisson, data=Salamanders)
+mod_list[[3]] <- glmmTMB(count ~ mined + cover + spp + (1|site), zi=~mined, family=poisson, data=Salamanders)
+dream::validate(mod_list)
+
 }
 \references{
 Hochberg, Y. (1988). A sharper Bonferroni procedure for multiple tests of significance. Biometrika, 75, 800–803. doi: 10.2307/2336325.
