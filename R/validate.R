@@ -59,7 +59,7 @@ validate <- function(mod_set, n = 1000, p.adjust.method = "none"){
 
 loopdy <- function(mod_set,n = n){
   scaled_sims <- DHARMa::simulateResiduals(fittedModel = mod_set, n = n)
-  res_tests <- invisible(DHARMa::testResiduals(scaled_sims, plot = F))
+  res_tests <- hush(DHARMa::testResiduals(scaled_sims, plot = F))
   zinf <- DHARMa::testZeroInflation(scaled_sims, plot = F)
 
   out <- data.frame(response = as.character(formula(mod_set))[2],
@@ -69,4 +69,15 @@ loopdy <- function(mod_set,n = n){
                     outliers_p = res_tests[[3]]$p.value,
                     zeroinf_p = zinf$p.value)
   return(out)
+}
+
+hush=function(code){
+  if(.Platform$OS.type == "unix") {
+    sink("/dev/null")
+  } else {
+    sink("NUL")
+  }
+  tmp = code
+  sink()
+  return(tmp)
 }
