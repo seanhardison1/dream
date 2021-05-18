@@ -4,7 +4,15 @@
 \alias{query_tac}
 \title{Query NOAA Tides and Currents stations}
 \usage{
-query_tac(start, end, product, station, step = "3 days", datum = "MLLW")
+query_tac(
+  start,
+  end,
+  product,
+  station,
+  step = "3 days",
+  datum = "MLLW",
+  tz = "gmt"
+)
 }
 \arguments{
 \item{start}{Character vector start date for query ("YYYY-MM-DD").}
@@ -13,7 +21,7 @@ query_tac(start, end, product, station, step = "3 days", datum = "MLLW")
 
 \item{product}{Specify data product type. Defaults to "water_temperature".
 See a complete listing of available products at \url{https://tidesandcurrents.noaa.gov/api/#products}. Note that all products are
-not available at all stations.}
+not available at all stations. All data are returned in metric units.}
 
 \item{station}{Station ID number. A complete listing of stations is available at \url{https://tidesandcurrents.noaa.gov/stations.html}.}
 
@@ -21,12 +29,11 @@ not available at all stations.}
 Larger time steps will result in faster downloads for longer time periods.}
 
 \item{datum}{Queries regarding water level require a datum. If none is selected, then datum defaults to "MLLW," or Mean-Lower Low Water. Example datum selections are available to view at \url{https://tidesandcurrents.noaa.gov/datums.html?id=8722607}.}
+
+\item{tz}{Data product time zone. Defaults to GMT ("gmt"). Other options include Local Standard Time ("lst") and Local Standard/Local Daylight Time ("lst_ldt").}
 }
 \description{
 Query NOAA Tides and Currents stations
-}
-\note{
-All times are GMT.
 }
 \examples{
 query_tac(start = "1994-03-16",

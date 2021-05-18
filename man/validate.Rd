@@ -4,14 +4,12 @@
 \alias{validate}
 \title{Assess model fit for multiple models through DHARMa residual simulation}
 \usage{
-validate(mod_set, n = 1000, p.adjust.method = "none")
+validate(mod_set, n = 1000)
 }
 \arguments{
 \item{mod_set}{A list of model objects.}
 
 \item{n}{Number of DHARMa simulations to generate from each model.}
-
-\item{p.adjust.method}{Defaults to \code{none}, but takes any correction method specified with \code{\link{p.adjust}}.}
 }
 \value{
 Returns a data.frame containing model formulas for each model and P values for
@@ -23,13 +21,7 @@ look for agreement between simulated and empirical residuals; assessing models f
 zero-inflation, anomalous prevalence of outliers, and deviations from expected distributions.
 }
 \details{
-The philosophy behind this approach is that models being compared using information criteria
-should meet modeling assumptions regardless of complexity, otherwise model selection
-may provide a parsimonious, poorly fitting model (Mazerolle 2019). This method should not
-be a replacement for visual inspection of model fit, but may be useful in an
-exploratory context, especially with more complicated hierarchical models. To remain conservative,
-resultant P values from DHARMa tests are not adjusted for multiple comparison by default, although
-P adjustment methods may be specified using \code{p.adjust.method}.
+Applies DHARMa residual diagnostics test to a list of models.
 }
 \examples{
 
@@ -39,12 +31,7 @@ mod_list[[1]] <- glmmTMB(count ~ mined + (1|site), zi=~mined, family=poisson, da
 mod_list[[2]] <- glmmTMB(count ~ mined + cover + (1|site), zi=~mined, family=poisson, data=Salamanders)
 mod_list[[3]] <- glmmTMB(count ~ mined + cover + spp + (1|site), zi=~mined, family=poisson, data=Salamanders)
 dream::validate(mod_list)
-
 }
 \references{
-Hochberg, Y. (1988). A sharper Bonferroni procedure for multiple tests of significance. Biometrika, 75, 800–803. doi: 10.2307/2336325.
-
 Hartig, Florian. 2017. “DHARMa: Residual Diagnostics for Hierarchical (Multi-Level/Mixed) Regression Models.” R Package Version 0.1 5.
-
-Mazerolle, Marc J. 2019. AICcmodavg: Model Selection and Multimodel Inference Based on (Q)AIC(c). https://cran.r-project.org/package=AICcmodavg.
 }
