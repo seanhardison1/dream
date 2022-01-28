@@ -21,7 +21,7 @@
 #'
 #'# With fct_to_numeric
 #'data.frame(fac = factor(num)) %>%
-  #'  mutate(bad_num = fct_to_num(fac))
+  #'  mutate(good_num = fct_to_num(fac))
 
 fct_to_num <- function(x){
   as.numeric(levels(x))[x]
