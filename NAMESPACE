@@ -2,7 +2,7 @@
 
 export("%>%")
 export(chens_moran)
-export(dream_table)
+export(fct_to_num)
 export(query_tac)
 export(sfc_as_cols)
 export(theme_fade)
