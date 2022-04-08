@@ -25,4 +25,6 @@ Imports:
     raster,
     sf,
     DHARMa,
+    sp,
+    raster,
     tibble
