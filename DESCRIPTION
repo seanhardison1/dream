@@ -21,10 +21,11 @@ Imports:
     lubridate,
     tsibble,
     stringr,
-    maptools,
     raster,
     sf,
     DHARMa,
     sp,
     raster,
     tibble
+Suggests:
+    maptools
