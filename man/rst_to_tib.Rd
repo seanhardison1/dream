@@ -20,10 +20,10 @@ A \code{tibble} with three columns: a fill variable, longitude, and latitude.
 Convert rasters to tibbles.
 }
 \examples{
-
 library(raster)
 f <- system.file("external/test.grd", package="raster")
 r <- raster(f)
 tib <- rst_to_tib(r)
 tib
+
 }
